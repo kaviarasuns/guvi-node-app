@@ -9,7 +9,6 @@ import { MongoClient } from "mongodb";
 import dotenv from "dotenv" 
 
 dotenv.config();
-console.log(process.env.MONGO_URL);
 
 const app = express();
 
@@ -113,18 +112,40 @@ async function createConnection(){
 }
 const client = await createConnection();
 
+
+
+
+//-------------- Create - POST Operation ------------------//
+
+
+// middleware (inbuilt) - express.json() - will convert body to JOSON
+app.post('/movies', async function (req, res){
+  const data = req.body;
+  console.log(data);
+  const result = await client.db("guvi").collection("movies").insertMany(data);
+  res.send(result);
+})
+
+
+
+//-------------- Read - GET Operation ------------------//
+
 app.get('/', function (req, res) {
   res.send('Hello World')
 })
 
 // function to show movies data
 app.get('/movies', async function (request, response) {
+  console.log(request.query); // query returns the query given by the user
+  
+  if(request.query.rating){
+    request.query.rating = +request.query.rating;
+  }
 
-  // console.log(request.query);
-
+  console.log(request.query);
   // Find returns Cursor - Pagination : To convert cursor to Array use toArray();
-  const movies = await client.db("guvi").collection("movies").find({}).toArray();
-  console.log(movies);
+  const movies = await client.db("guvi").collection("movies").find(request.query).toArray();
+  // console.log(movies);
   response.send(movies);
 
 })
@@ -152,39 +173,37 @@ app.get('/movies/:id', async function (request, response) {
 })
 
 
-
-// using delete method to delete particular movies
-// app.delete('/movies/:id', async function (request, response) {
-//   const {id} = request.params;
-//   console.log(request.params, id);
-
-//   // const movie = movies.find((mv)=> mv.id == id); // receiving movies saved locally
-//   const movie = await client.db("guvi").collection("movies").findOne({id: id})  // getting movies from mongoDB database
-//   console.log(movie);
-//   movie ? response.send(movie) : response.status(404).send({msg: "Movie not fount"});
-// })
-
+//-------------- Update - PUT Operation ------------------//
 
 // using update method to update a field in movies
-// app.put('/movies/:id', async function (request, response) {
-//   const {id} = request.params;
+app.put('/movies/:id', async function (request, response) {
+  const {id} = request.params;
+  console.log(request.params, id);
+  const data = request.body;
+  
+  // db.movies.updateOne({id: "101"},{$set: data});
 
-//   const data = request.body;
-//   console.log(request.params, id);
-
-//   // const movie = movies.find((mv)=> mv.id == id); // receiving movies saved locally
-//   const movie = await client.db("guvi").collection("movies").findOne({name: id}).updateOne({rating},{$set:{}})  // getting movies from mongoDB database
-//   console.log(movie);
-//   movie ? response.send(movie) : response.status(404).send({msg: "Movie not fount"});
-// })
-
-
-// middleware (inbuilt) - express.json() - will convert body to JOSON
-app.post('/movies', async function (req, res){
-  const data = req.body;
-  console.log(data);
-  const result = await client.db("guvi").collection("movies").insertMany(data);
-  res.send(result);
+  const result = await client.db("guvi").collection("movies").updateOne({id: id},{$set: data});  // getting movies from mongoDB database
+  response.send(result);
+  
 })
+
+//-------------- Delete - DELETE Operation ------------------//
+
+
+// using delete method to delete particular movies
+app.delete('/movies/:id', async function (request, response) {
+  const {id} = request.params;
+  console.log(request.params, id);
+  // db.movies.deleteOne({id: "101"});
+
+  const result = await client.db("guvi").collection("movies").deleteOne({id:id});
+
+  console.log(result);
+  result.deletedCount !=0 ? response.send(result) : response.status(404).send({Msg: "Movie not found"});
+ 
+})
+
+
 
 app.listen(PORT, ()=> console.log(`App started in ${PORT}`));
