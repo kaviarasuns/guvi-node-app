@@ -15,7 +15,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors()); // cors called
+app.use(cors()); // cors called below express;
 const PORT = process.env.PORT;
 // const PORT = process.env.PORT;
 

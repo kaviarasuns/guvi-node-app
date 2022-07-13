@@ -1,5 +1,6 @@
 import express from "express";
 import { client } from "../index.js";
+import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
@@ -104,7 +105,7 @@ async function updateMoviesById(id, data) {
 }
 
 async function getMoviesById(id) {
-    return await client.db("guvi").collection("movies").findOne({ id: id });
+    return await client.db("guvi").collection("movies").findOne({ _id: ObjectId(id) });
 }
 
 async function createMovies(data) {
