@@ -97,15 +97,15 @@ router.delete('/:id', async function (request, response) {
 export const moviesRouter = router;
 
 async function deleteMoviesById(id) {
-    return await client.db("guvi").collection("movies").deleteOne({ id: id });
+    return await client.db("guvi").collection("movies").deleteOne({ _id: ObjectId(id) });
 }
 
 async function updateMoviesById(id, data) {
-    return await client.db("guvi").collection("movies").updateOne({ id: id }, { $set: data });
+    return await client.db("guvi").collection("movies").updateOne({ _id: ObjectId(id) }, { $set: data });
 }
 
 async function getMoviesById(id) {
-    return await client.db("guvi").collection("movies").findOne({ _id: ObjectId(id) });
+    return await client.db("guvi").collection("movies").findOne({ _id: ObjectId(id) }); 
 }
 
 async function createMovies(data) {
