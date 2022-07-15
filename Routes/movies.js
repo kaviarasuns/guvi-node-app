@@ -1,6 +1,7 @@
 import express from "express";
 import { client } from "../index.js";
 import { ObjectId } from "mongodb";
+import { auth } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ router.post('/', async function (req, res){
 
 
 // function to show movies data
-router.get('/', async function (request, response) {
+router.get('/', auth, async function (request, response) {
   console.log(request.query); // query returns the query given by the user
   
   if(request.query.rating){
@@ -49,7 +50,7 @@ router.get('/', async function (request, response) {
 
 
 // using find method to get particular movies
-router.get('/:id', async function (request, response) {
+router.get('/:id', auth, async function (request, response) {
   const {id} = request.params;
   console.log(request.params, id);
 
@@ -81,7 +82,7 @@ router.put('/:id', async function (request, response) {
 
 
 // using delete method to delete particular movies
-router.delete('/:id', async function (request, response) {
+router.delete('/:id', auth, async function (request, response) {
   const {id} = request.params;
   console.log(request.params, id);
   // db.movies.deleteOne({id: "101"});

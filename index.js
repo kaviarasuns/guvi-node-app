@@ -9,15 +9,8 @@ import { MongoClient } from "mongodb";
 import dotenv from "dotenv" 
 import { moviesRouter } from "./Routes/movies.js";
 import cors from "cors";
+import { usersRouter } from "./Routes/users.js";
 
-dotenv.config();
-
-
-const app = express();
-
-app.use(cors()); // cors called below express;
-const PORT = process.env.PORT;
-// const PORT = process.env.PORT;
 
 const movies= [
   {
@@ -100,6 +93,17 @@ const movies= [
   }
 ];
 
+
+dotenv.config();
+
+
+const app = express();
+
+app.use(cors()); // cors called below express;
+const PORT = process.env.PORT;
+// const PORT = process.env.PORT;
+
+
 // app.use intercepts all the request and applies express.json() (Inbuilt middleware)
 app.use(express.json());
 
@@ -124,5 +128,32 @@ app.get('/', function (req, res) {
 
 // Using CRUD Operations defined in movies.js file
 app.use("/movies",moviesRouter);
+app.use("/users",usersRouter);
+// app.use("/mobiles",usersRouter);
 
 app.listen(PORT, ()=> console.log(`App started in ${PORT}`));
+
+
+
+// genHashedPassword("password@123");
+
+
+
+// Final-Demo Display Mobiles Task
+
+
+app.get('/mobiles', async function (req, res) {
+
+
+  const  mobiles = await client.db("guvi").collection("mobiles").find({}).toArray();
+  
+  res.send(mobiles)
+})
+
+
+app.post('/mobiles', async function (req, res){
+  const data = req.body;
+  console.log(data);
+  const result = await client.db("guvi").collection("mobiles").insertMany(data);
+  res.send(result);
+})
