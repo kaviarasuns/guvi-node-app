@@ -157,3 +157,24 @@ app.post('/mobiles', async function (req, res){
   const result = await client.db("guvi").collection("mobiles").insertMany(data);
   res.send(result);
 })
+
+
+
+// Hackathon 2 Database
+
+app.post('/stackflow', async function (req, res){
+  const data = req.body;
+  console.log(data);
+  const result = await client.db("guvi").collection("stack").insertMany(data);
+  res.send(result);
+})
+
+
+app.get('/stackflow', async function (req, res) {
+
+
+  const  mobiles = await client.db("guvi").collection("stack").find({}).toArray();
+  
+  res.send(mobiles)
+})
+
