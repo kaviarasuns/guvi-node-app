@@ -107,7 +107,7 @@ const PORT = process.env.PORT;
 // app.use intercepts all the request and applies express.json() (Inbuilt middleware)
 // app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://stellular-trifle-fcf5cb.netlify.app/"],
 }));
 
 
