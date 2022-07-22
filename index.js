@@ -96,19 +96,32 @@ const movies= [
 
 dotenv.config();
 
-
 const app = express();
+
+
+
+
+
+
 
 app.use(cors()); // cors called below express;
 const PORT = process.env.PORT;
 // const PORT = process.env.PORT;
 
+// mongoose.connect(process.env.MONGO_URL, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+    
+// })
+// .then(()=>console.log('Connected to db'))
+// .catch((err)=> console.log("DB connection error",err));
+
 
 // app.use intercepts all the request and applies express.json() (Inbuilt middleware)
-// app.use(express.json());
-app.use(cors({
-    origin: ["https://stellular-trifle-fcf5cb.netlify.app/"],
-}));
+app.use(express.json());
+// app.use(cors({
+//     origin: ["https://stellular-trifle-fcf5cb.netlify.app/"],
+// }));
 
 
 // connecting to MongoDB
@@ -121,6 +134,7 @@ async function createConnection(){
   console.log("MongoDB is connected");
   return client;
 }
+
 export const client = await createConnection();
 
 
@@ -134,7 +148,7 @@ app.use("/movies",moviesRouter);
 app.use("/users",usersRouter);
 // app.use("/mobiles",usersRouter);
 
-app.listen(PORT, ()=> console.log(`App started in ${PORT}`));
+
 
 
 
@@ -165,7 +179,7 @@ app.post('/mobiles', async function (req, res){
 
 // Hackathon 2 Database
 
-app.post('/stackflow', async function (req, res){
+app.post('/stack', async function (req, res){
   const data = req.body;
   console.log(data);
   const result = await client.db("guvi").collection("stack").insertMany(data);
@@ -173,7 +187,7 @@ app.post('/stackflow', async function (req, res){
 })
 
 
-app.get('/stackflow', async function (req, res) {
+app.get('/stack', async function (req, res) {
 
 
   const  mobiles = await client.db("guvi").collection("stack").find({}).toArray();
@@ -181,3 +195,6 @@ app.get('/stackflow', async function (req, res) {
   res.send(mobiles)
 })
 
+
+
+app.listen(PORT, ()=> console.log(`App started in ${PORT}`));
