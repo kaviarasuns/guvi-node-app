@@ -194,21 +194,21 @@ app.get("/stack", async function (req, res) {
 
 // ECOM CREATE PRODUCT
 
-app.post("/products", async function (req, res) {
-  const data = req.body;
-  console.log(data);
-  const result = await client.db("guvi").collection("ecom").insertMany(data);
-  res.send(result);
-});
+// app.post("/products", async function (req, res) {
+//   const data = req.body;
+//   console.log(data);
+//   const result = await client.db("guvi").collection("ecom").insertMany(data);
+//   res.send(result);
+// });
 
-app.get("/products", async (req, res) => {
-  const products = await client
-    .db("guvi")
-    .collection("ecom")
-    .find({})
-    .toArray();
+// app.get("/products", async (req, res) => {
+//   const products = await client
+//     .db("guvi")
+//     .collection("ecom")
+//     .find({})
+//     .toArray();
 
-  res.send(products);
-});
+//   res.send(products);
+// });
 
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
