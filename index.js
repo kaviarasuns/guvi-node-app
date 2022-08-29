@@ -6,13 +6,12 @@
 // importing after updating "type": "module" in package.json
 import express from "express";
 import { MongoClient } from "mongodb";
-import dotenv from "dotenv" 
+import dotenv from "dotenv";
 import { moviesRouter } from "./Routes/movies.js";
 import cors from "cors";
 import { usersRouter } from "./Routes/users.js";
 
-
-const movies= [
+const movies = [
   {
     id: "100",
     name: "RRR",
@@ -21,7 +20,7 @@ const movies= [
     rating: 8.8,
     summary:
       "RRR is an upcoming Indian Telugu-language period action drama film directed by S. S. Rajamouli, and produced by D. V. V. Danayya of DVV Entertainments.",
-    trailer: "https://www.youtube.com/embed/f_vbAtFSEc0"
+    trailer: "https://www.youtube.com/embed/f_vbAtFSEc0",
   },
   {
     id: "101",
@@ -31,7 +30,7 @@ const movies= [
     rating: 7,
     summary:
       "With the world now aware that he is Iron Man, billionaire inventor Tony Stark (Robert Downey Jr.) faces pressure from all sides to share his technology with the military. He is reluctant to divulge the secrets of his armored suit, fearing the information will fall into the wrong hands. With Pepper Potts (Gwyneth Paltrow) and Rhodes (Don Cheadle) by his side, Tony must forge new alliances and confront a powerful new enemy.",
-    trailer: "https://www.youtube.com/embed/wKtcmiifycU"
+    trailer: "https://www.youtube.com/embed/wKtcmiifycU",
   },
   {
     id: "102",
@@ -41,7 +40,7 @@ const movies= [
     rating: 8.1,
     summary:
       "A hunter's life takes a drastic turn when he discovers two million dollars while strolling through the aftermath of a drug deal. He is then pursued by a psychopathic killer who wants the money.",
-    trailer: "https://www.youtube.com/embed/38A__WT3-o0"
+    trailer: "https://www.youtube.com/embed/38A__WT3-o0",
   },
   {
     id: "103",
@@ -51,7 +50,7 @@ const movies= [
     summary:
       "A tribal woman and a righteous lawyer battle in court to unravel the mystery around the disappearance of her husband, who was picked up the police on a false case",
     rating: 8.8,
-    trailer: "https://www.youtube.com/embed/nnXpbTFrqXA"
+    trailer: "https://www.youtube.com/embed/nnXpbTFrqXA",
   },
   {
     id: "104",
@@ -61,7 +60,7 @@ const movies= [
       "Marvel's The Avengers (classified under the name Marvel Avengers\n Assemble in the United Kingdom and Ireland), or simply The Avengers, is\n a 2012 American superhero film based on the Marvel Comics superhero team\n of the same name.",
     poster:
       "https://terrigen-cdn-dev.marvel.com/content/prod/1x/avengersendgame_lob_crd_05.jpg",
-    trailer: "https://www.youtube.com/embed/eOrNdBpGMv8"
+    trailer: "https://www.youtube.com/embed/eOrNdBpGMv8",
   },
   {
     id: "105",
@@ -70,7 +69,7 @@ const movies= [
     rating: 8.6,
     summary:
       "When Earth becomes uninhabitable in the future, a farmer and ex-NASA\n pilot, Joseph Cooper, is tasked to pilot a spacecraft, along with a team\n of researchers, to find a new planet for humans.",
-    trailer: "https://www.youtube.com/embed/zSWdZVtXT7E"
+    trailer: "https://www.youtube.com/embed/zSWdZVtXT7E",
   },
   {
     id: "106",
@@ -79,7 +78,7 @@ const movies= [
     rating: 8,
     summary:
       "In the kingdom of Mahishmati, Shivudu falls in love with a young warrior woman. While trying to woo her, he learns about the conflict-ridden past of his family and his true legacy.",
-    trailer: "https://www.youtube.com/embed/sOEg_YZQsTI"
+    trailer: "https://www.youtube.com/embed/sOEg_YZQsTI",
   },
   {
     id: "107",
@@ -89,20 +88,13 @@ const movies= [
     rating: 8,
     summary:
       "Remy, a rat, aspires to become a renowned French chef. However, he fails to realise that people despise rodents and will never enjoy a meal cooked by him.",
-    trailer: "https://www.youtube.com/embed/NgsQ8mVkN8w"
-  }
+    trailer: "https://www.youtube.com/embed/NgsQ8mVkN8w",
+  },
 ];
-
 
 dotenv.config();
 
 const app = express();
-
-
-
-
-
-
 
 app.use(cors()); // cors called below express;
 const PORT = process.env.PORT;
@@ -111,11 +103,10 @@ const PORT = process.env.PORT;
 // mongoose.connect(process.env.MONGO_URL, {
 //     useNewUrlParser: true,
 //     useUnifiedTopology: true,
-    
+
 // })
 // .then(()=>console.log('Connected to db'))
 // .catch((err)=> console.log("DB connection error",err));
-
 
 // app.use intercepts all the request and applies express.json() (Inbuilt middleware)
 app.use(express.json());
@@ -123,12 +114,11 @@ app.use(express.json());
 //     origin: ["https://stellular-trifle-fcf5cb.netlify.app/"],
 // }));
 
-
 // connecting to MongoDB
 // const MONGO_URL = "mongodb://localhost"  //nodejs - 16
 // const MONGO_URL = "mongodb://127.0.0.1"; // nodejs - 16+
 const MONGO_URL = process.env.MONGO_URL;
-async function createConnection(){
+async function createConnection() {
   const client = new MongoClient(MONGO_URL);
   await client.connect();
   console.log("MongoDB is connected");
@@ -137,64 +127,88 @@ async function createConnection(){
 
 export const client = await createConnection();
 
+// const path = require('path')
 
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
+// if(process.env.NODE_ENV==='production')
+// {
 
+//     app.use('/' , express.static('client/build'))
+
+//     app.get('*' , (req , res)=>{
+
+//           res.sendFile(path.resolve(__dirname, 'client/build/index.html'));
+
+//     })
+
+// }
+app.get("/", function (req, res) {
+  res.send("Hello World");
+});
 
 // Using CRUD Operations defined in movies.js file
-app.use("/movies",moviesRouter);
-app.use("/users",usersRouter);
+app.use("/movies", moviesRouter);
+app.use("/users", usersRouter);
 // app.use("/mobiles",usersRouter);
-
-
-
-
 
 // genHashedPassword("password@123");
 
-
-
 // Final-Demo Display Mobiles Task
 
+app.get("/mobiles", async function (req, res) {
+  const mobiles = await client
+    .db("guvi")
+    .collection("mobiles")
+    .find({})
+    .toArray();
 
-app.get('/mobiles', async function (req, res) {
+  res.send(mobiles);
+});
 
-
-  const  mobiles = await client.db("guvi").collection("mobiles").find({}).toArray();
-  
-  res.send(mobiles)
-})
-
-
-app.post('/mobiles', async function (req, res){
+app.post("/mobiles", async function (req, res) {
   const data = req.body;
   console.log(data);
   const result = await client.db("guvi").collection("mobiles").insertMany(data);
   res.send(result);
-})
-
-
+});
 
 // Hackathon 2 Database
 
-app.post('/stack', async function (req, res){
+app.post("/stack", async function (req, res) {
   const data = req.body;
   console.log(data);
   const result = await client.db("guvi").collection("stack").insertMany(data);
   res.send(result);
-})
+});
 
+app.get("/stack", async function (req, res) {
+  const mobiles = await client
+    .db("guvi")
+    .collection("stack")
+    .find({})
+    .toArray();
 
-app.get('/stack', async function (req, res) {
+  res.send(mobiles);
+});
 
+// ECOM DATABASE
 
-  const  mobiles = await client.db("guvi").collection("stack").find({}).toArray();
-  
-  res.send(mobiles)
-})
+// ECOM CREATE PRODUCT
 
+app.post("/products", async function (req, res) {
+  const data = req.body;
+  console.log(data);
+  const result = await client.db("guvi").collection("ecom").insertMany(data);
+  res.send(result);
+});
 
+app.get("/products", async (req, res) => {
+  const products = await client
+    .db("guvi")
+    .collection("ecom")
+    .find({})
+    .toArray();
 
-app.listen(PORT, ()=> console.log(`App started in ${PORT}`));
+  res.send(products);
+});
+
+app.listen(PORT, () => console.log(`App started in ${PORT}`));
