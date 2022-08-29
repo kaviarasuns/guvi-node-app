@@ -202,12 +202,8 @@ app.post("/products", async function (req, res) {
 });
 
 app.get("/products", async (req, res) => {
-  const products = await client
-    .db("guvi")
-    .collection("ecom")
-    .find({})
-    .toArray();
-
+  const products = await client.db("guvi").collection("ecom").find().toArray();
+  console.log(products);
   res.send(products);
 });
 
