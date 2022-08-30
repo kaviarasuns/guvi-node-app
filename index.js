@@ -10,6 +10,7 @@ import dotenv from "dotenv";
 import { moviesRouter } from "./Routes/movies.js";
 import cors from "cors";
 import { usersRouter } from "./Routes/users.js";
+import { hallbookingRouter } from "./Routes/hallbooking.js";
 
 const movies = [
   {
@@ -148,6 +149,7 @@ app.get("/", function (req, res) {
 // Using CRUD Operations defined in movies.js file
 app.use("/movies", moviesRouter);
 app.use("/users", usersRouter);
+app.use("/hallbooking", hallbookingRouter);
 // app.use("/mobiles",usersRouter);
 
 // genHashedPassword("password@123");
